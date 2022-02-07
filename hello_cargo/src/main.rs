@@ -1,3 +1,5 @@
+mod modtest;
+
 fn main() {
     print_hello_world();
     string_type();
@@ -7,6 +9,9 @@ fn main() {
     borrow();
     mut_reference();
     reference_limit();
+    struct_test();
+
+    println!("{}", modtest::get_hello_world());
 }
 
 fn print_hello_world() {
@@ -107,4 +112,29 @@ fn reference_limit() {
     // 가변 참조자가 존재하는 상태에서 불변참조자를 사용할 경우 에러를 뱉는다.
     // 불변참조자는 사용중인 동안 갑자기 값이 바뀔거라고 예상하지 않기 때문이다.
     // println!("{}", r1.len());
+}
+
+// 구조체 선언
+// 구조체의 username과 email을 String 타입으로 지정하였기 때문에 
+// username과 email에 할당되는 String은 해당 구조체 인스턴스가 유효한 동안만 유효하다.
+struct User {
+    username: String,
+    email: String,
+    sign_in_count: u64,
+    active: bool,
+}
+
+fn struct_test() {
+    let mut user = User {
+        username: String::from("na yun su"),
+        email: String::from("skennel2@gmail.com"),
+        sign_in_count: 1, 
+        active: true
+    };
+
+    let emailValue = String::from("skennel2@gmail.com");
+    //user 변수 지정시 mut로 되어있지 않다면 email속성을 변경하려는 동작에 대해 컴파일 에러가 발생한다.
+    user.email = emailValue;
+
+    println!("{}", user.email);
 }
