@@ -4,6 +4,9 @@ fn main() {
     copy_value();
     move_memory();
     ownership();
+    borrow();
+    mut_reference();
+    reference_limit();
 }
 
 fn print_hello_world() {
@@ -55,4 +58,53 @@ fn ownership() {
 
 fn takes_ownership(s: String) {
     println!("{}", s);
+}
+
+fn borrow() {
+    let s = String::from("borrow");
+    // & 키워드는 값을 참조하지만 소유하지는 않는 참조자를 생성하도록한다.
+    // 소유권을 가지고 있지 않기 떄문에 넘겨받은 참조자를 이용해서 수정할수는 없다.
+    let len = calculate_length(&s);
+
+    println!("{}", len);
+
+    // 컴파일 에러가 발생하지 않는다.
+    println!("{}", s);
+}
+
+fn calculate_length(value: &String) -> usize {
+    // `value` is a `&` reference, so the data it refers to cannot be borrowed as mutable
+    // value.push_str("!!!");
+
+    return value.len();
+}
+
+fn mut_reference() {
+    let mut s = String::from("borrow");
+
+    let r1 = &mut s;
+    // second mutable borrow occurs here
+    // 하나 이상의 mut레퍼런스를 빌려줄수 없다.
+    // let r2 = &mut s;
+
+    r1.push_str("!!!");
+
+    println!("{}", s);
+}
+
+fn reference_limit() {
+    let mut s = String::from("reference_limit");
+
+    let r1 = &s;
+    let r2 = &s;
+    let r3 = &mut s; 
+
+    r3.push_str("!!!");
+
+    println!("{}", s);
+
+    // cannot borrow `s` as mutable because it is also borrowed as immutable
+    // 가변 참조자가 존재하는 상태에서 불변참조자를 사용할 경우 에러를 뱉는다.
+    // 불변참조자는 사용중인 동안 갑자기 값이 바뀔거라고 예상하지 않기 때문이다.
+    // println!("{}", r1.len());
 }
