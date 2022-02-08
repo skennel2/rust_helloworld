@@ -20,9 +20,37 @@ fn print_hello_world() {
     println!("{}", value);
 }
 
+/**
+ * signed integers: i8, i16, i32, i64, i128 and isize (pointer size)
+ * unsigned integers: u8, u16, u32, u64, u128 and usize (pointer size)
+ * floating point: f32, f64
+ * char Unicode scalar values like 'a', 'α' and '∞' (4 bytes each)
+ * bool either true or false
+ * and the unit type (), whose only possible value is an empty tuple: ()
+ * 
+ */
+fn primitive_type() {
+    let boolean: bool = true;
+    let a_float:f64 = 3.14;
+
+    // suffix 사용
+    let an_integer = 5i32;
+    
+    // 타입추론 기본값
+    let default_float = 3.0; // f64
+    let default_integer = 7; // i32
+
+    let mut inferred_type = 12; // 아래 라인으로 인해 i64로 추론된다.
+    inferred_type = 4294967296i64;
+
+    let a_char: char = 'a';
+}
+
 fn string_type() {
+    //??? 스트링리터럴과 스트링타입이 별도로 분리되어 있는듯하다.
     let literal_string = "hello string literal";
     let mut string_type = String::from("Hello String");
+    //??? 새로운 스트링을 리턴하는것이 아닌 값 자체를 변경시키는듯하다.
     string_type.push_str("!!!");
     println!("{}", literal_string);
     println!("{}", string_type);
@@ -132,9 +160,9 @@ fn struct_test() {
         active: true
     };
 
-    let emailValue = String::from("skennel2@gmail.com");
+    let email_value = String::from("skennel2@gmail.com");
     //user 변수 지정시 mut로 되어있지 않다면 email속성을 변경하려는 동작에 대해 컴파일 에러가 발생한다.
-    user.email = emailValue;
+    user.email = email_value;
 
     println!("{}", user.email);
 }
