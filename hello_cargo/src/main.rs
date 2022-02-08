@@ -2,15 +2,20 @@ mod modtest;
 
 fn main() {
     print_hello_world();
+    primitive_type();
+    mutabillity();
     string_type();
     copy_value();
     move_memory();
+    declare_first();
     ownership();
     borrow();
     mut_reference();
     reference_limit();
     struct_test();
 
+    for_loop();
+    match_syntax();
     println!("{}", modtest::get_hello_world());
 }
 
@@ -78,6 +83,27 @@ fn move_memory() {
         // 한번 이동된 것은 컴파일러가 유효하지 않다고 판단한다.
         // println!("{}", origin);
     }
+}
+
+fn declare_first() {
+    let a_binding;
+    {
+        let x = 2;
+
+        a_binding = x * x;
+    }
+
+    println!("{}", a_binding);
+
+    let another_binding;
+
+    // Error! Use of uninitialized binding
+    // println!("another binding: {}", another_binding);
+    // FIXME ^ Comment out this line
+
+    another_binding = 1;
+
+    println!("another binding: {}", another_binding);
 }
 
 fn ownership() {
@@ -165,4 +191,52 @@ fn struct_test() {
     user.email = email_value;
 
     println!("{}", user.email);
+}
+
+fn mutabillity() {
+    let user = User {
+        username: String::from("na yun su"),
+        email: String::from("skennel2@gmail.com"),
+        sign_in_count: 1, 
+        active: true
+    };
+
+    let email_value = String::from("skennel2@naver.com");
+
+    // 변수가 mutable로 선언되어있지 않으면 변수 자체의 값이 아닌 변수가 가르키고 있는 대상의 어떤 값도 변경이 불가능하다.
+    // user.email = email_value;
+
+    println!("{}", user.email);
+}
+
+fn for_loop() {
+    let count = 100;
+
+    // 0 ~ 100 까지 루프
+    let mut sum = 0;
+    for n in 0..=count {
+        sum += n;
+    }
+
+    println!("{}", sum);
+
+    // 0 ~ 99 까지 루프
+    let mut sum = 0;
+    for n in 0..count {
+        sum += n;
+    }
+
+    println!("{}", sum);
+}
+
+fn match_syntax() {
+    let number = 14; 
+
+    let result = match number % 2 {
+        0 => true,
+        1 => false,
+        _ => false,
+    };
+
+    println!("{}", result);
 }
