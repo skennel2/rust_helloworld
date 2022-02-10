@@ -19,7 +19,9 @@ fn main() {
     // 구조체
     struct_test();
     method_test();
+    trait_test();
 
+    //flow control
     for_loop();
     match_syntax();
 
@@ -200,8 +202,8 @@ impl User {
 
     // self 인자가 없을 경우 일종의 static 함수로 쓰인다.
     // User::make_user 의 꼴로 사용가능
-    pub fn make_user(username: &str, email: &str) {
-        User {
+    pub fn make_user(username: &str, email: &str) -> User {
+        return User {
             username: String::from(username),
             email: String::from(email),
             sign_in_count: 0, 
@@ -235,7 +237,9 @@ fn method_test() {
 
     user.print_email();
     
-    let new_user = User::make_user("test_id", "test_id@gmail.com");
+    let new_user: User = User::make_user("test_id", "test_id@gmail.com");
+
+    new_user.print_email();
 }
 
 fn mutabillity() {
@@ -274,27 +278,39 @@ fn for_loop() {
     println!("{}", sum);
 }
 
+/**
+ * match 연산식 { 연산결과 => 결과 매칭에 따른 실행구문, ... }
+ */
 fn match_syntax() {
     let number = 14; 
 
     let result = match number % 2 {
         0 => true,
         1 => false,
+
+        // _는 default의 의미로 어떤 것에도 속하지 않는 케이스를 의미한다.
         _ => false,
     };
 
     println!("{}", result);
 }
 
+/**
+ * std에 존재하는 Option 타입은 여타 다른 언어의 null을 대체한다. 
+ */
 fn option_syntax() {
-    let value: Option<i32> = Some(32);
+    let value: Option<i32> = Some(32); // Option::Some(32)에서 Option::은 생략이 가능하다.
     let value2: i32 = 16;
 
+    // Option<i32> 타입과 i32는 타입입장에서는 다르기 때문에 실제 값을 이용한 연산을 위해서는 체크가 필수적이다.
     if value.is_some() {
         println!("{}", value.unwrap() + value2)
     }
 }
 
+/**
+ * 튜플을 이용해 여러가지 타입을 묶어 복합타입을 지정할 수 있다.
+ */
 fn tuple_syntax() {
     let t: (u32, String) = (3, String::from("three"));
 
@@ -302,6 +318,9 @@ fn tuple_syntax() {
     println!("{}", t.1);
 }
 
+/**
+ * 
+ */
 fn vector_type() {
     let mut number_v: Vec<i32> = vec![1, 2, 3];
 
@@ -309,4 +328,32 @@ fn vector_type() {
 
     println!("Vector: {:?}", number_v);
     println!("min value: {:?}", number_v.iter().min().unwrap());
+}
+
+// trait 일종의 인터페이스라고 말할수 있을거같다.
+
+trait Flyable {
+    fn fly(&self);
+}
+
+struct Bird {
+    name: String
+}
+
+impl Flyable for Bird {
+    fn fly(&self) {
+        println!("{:?} fly", self.name);
+        
+    }
+}
+
+fn trait_test() {
+    let bird: Bird = Bird {
+        name: String::from("비둘기")
+    };
+
+    // ??? 이게 왜안되는지 모르겠다.
+    // let fly: Flyable = bird;
+
+    bird.fly();
 }
