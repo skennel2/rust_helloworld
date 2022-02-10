@@ -12,10 +12,23 @@ fn main() {
     borrow();
     mut_reference();
     reference_limit();
+
+    // tuple
+    tuple_syntax();
+
+    // 구조체
     struct_test();
+    method_test();
 
     for_loop();
     match_syntax();
+
+    // Option
+    option_syntax();
+
+    //
+    vector_type();
+
     println!("{}", modtest::get_hello_world());
 }
 
@@ -108,7 +121,7 @@ fn declare_first() {
 
 fn ownership() {
     let s = String::from("ownership will be moved to some function");
-
+    
     takes_ownership(s);
 
     // s가 takes_ownership 함수의 인자로 이동되어 s는 유효하지않은 상태
@@ -178,6 +191,25 @@ struct User {
     active: bool,
 }
 
+// User 구조체에 메소드 구현 impl 키워드를 사용한다.
+impl User {
+    // 메소드는 self 인자를 가져야하며 self인자는 해당 메소드를 사용하는 구조체의 인스턴스를 가르킨다.
+    pub fn print_email(&self) {
+        println!("{}", self.email);
+    }
+
+    // self 인자가 없을 경우 일종의 static 함수로 쓰인다.
+    // User::make_user 의 꼴로 사용가능
+    pub fn make_user(username: &str, email: &str) {
+        User {
+            username: String::from(username),
+            email: String::from(email),
+            sign_in_count: 0, 
+            active: true
+        };
+    }
+}
+
 fn struct_test() {
     let mut user = User {
         username: String::from("na yun su"),
@@ -191,6 +223,19 @@ fn struct_test() {
     user.email = email_value;
 
     println!("{}", user.email);
+}
+
+fn method_test() {
+    let user = User {
+        username: String::from("gaeko14"),
+        email: String::from("gaeko14@gmail.com"),
+        sign_in_count: 1, 
+        active: false
+    };
+
+    user.print_email();
+    
+    let new_user = User::make_user("test_id", "test_id@gmail.com");
 }
 
 fn mutabillity() {
@@ -239,4 +284,29 @@ fn match_syntax() {
     };
 
     println!("{}", result);
+}
+
+fn option_syntax() {
+    let value: Option<i32> = Some(32);
+    let value2: i32 = 16;
+
+    if value.is_some() {
+        println!("{}", value.unwrap() + value2)
+    }
+}
+
+fn tuple_syntax() {
+    let t: (u32, String) = (3, String::from("three"));
+
+    println!("{}", t.0);
+    println!("{}", t.1);
+}
+
+fn vector_type() {
+    let mut number_v: Vec<i32> = vec![1, 2, 3];
+
+    number_v.push(4);
+
+    println!("Vector: {:?}", number_v);
+    println!("min value: {:?}", number_v.iter().min().unwrap());
 }
