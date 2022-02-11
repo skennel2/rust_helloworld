@@ -17,3 +17,8 @@ extern {
 pub fn greet() {
     alert("Hello, wasm-test!");
 }
+
+#[wasm_bindgen]
+pub fn test() {
+    alert("dfdfdf");
+}

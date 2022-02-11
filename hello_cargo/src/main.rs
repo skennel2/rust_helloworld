@@ -6,10 +6,13 @@ fn main() {
     mutabillity();
     string_type();
     copy_value();
+    primitive_ref();
     move_memory();
     declare_first();
     ownership();
+
     borrow();
+
     mut_reference();
     reference_limit();
 
@@ -28,8 +31,11 @@ fn main() {
     // Option
     option_syntax();
 
-    //
+    // vector
     vector_type();
+    vector_type2();
+    get_vector_value();
+    vector_borrow();
 
     println!("{}", modtest::get_hello_world());
 }
@@ -83,6 +89,17 @@ fn copy_value() {
 
     println!("{}", origin);
     println!("{}", copy);
+}
+
+fn primitive_ref() {    
+    let number = 3;
+    let number_ref: &i32 = &number;
+
+    // 컴파일 에러, number_ref가 number를 참조하고 있는 상황에서 원본의 변경을 시도하는 것을 허용하지 않는다.
+    // number = 5;
+    
+    println!("number: {:?}", number);
+    println!("number_ref: {:?}", number_ref);
 }
 
 fn move_memory() {
@@ -322,12 +339,50 @@ fn tuple_syntax() {
  * 
  */
 fn vector_type() {
+    // vec! 메크로를 제공한다.
     let mut number_v: Vec<i32> = vec![1, 2, 3];
 
     number_v.push(4);
 
     println!("Vector: {:?}", number_v);
     println!("min value: {:?}", number_v.iter().min().unwrap());
+}
+
+fn vector_type2() {
+    let mut v: Vec<i32> = Vec::new();
+
+    v.push(32);
+}
+
+fn get_vector_value() {
+    let mut v: Vec<i32> = vec![1, 2, 3];
+
+    let value = v[2];
+    let value_ref = &v[2];
+    // Option으로 값을 리턴한다.
+    let value_option = v.get(100);
+
+    println!("index 2: {:?}", value);
+    println!("index 2 ref: {:?}", value_ref);
+    println!("index 2 get: {:?}", value_option);
+}
+
+fn vector_borrow() {
+    let mut v = vec![1, 2, 3, 4, 5];
+
+    let first = &v[0];
+    
+    // mutable borrow occurs here
+    // 아이템에 대한 참조자를 가지는 동안 벡터에 요소 추가 시도하는것도 허용하지 않는다.
+    // v.push(6);
+
+    println!("vector_borrow: {:?}", first);
+}
+fn vector_iter() {
+    let v = vec![100, 32, 57];
+    for i in &v {
+        println!("{}", i);
+    }
 }
 
 // trait 일종의 인터페이스라고 말할수 있을거같다.
